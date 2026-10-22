@@ -114,7 +114,7 @@ const FOX_AR = 0.62667;
 const $ = s => document.querySelector(s);
 const app = $("#app");
 const TEST = new URLSearchParams(location.search).has("test");
-const KEY = "bday37";
+const KEY = "bday38";
 let S; try{ S = JSON.parse(localStorage.getItem(KEY)); }catch(e){}
 S = S || {step:-1,phase:"q",wrong:0,digits:[],result:null};
 const save = () => { try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} };
@@ -343,7 +343,9 @@ function stepView(){
       else { S.wrong++; save(); render(); } };
     $("#ok").onclick=go; $("#a").onkeydown=e=>{ if(e.key==="Enter") go(); };
   } else {
-    if(!S.digits[S.step]){ S.digits[S.step]=m.digit; save(); }
+    S.seen=S.seen||[]; if(S.seen.indexOf(S.step)<0) S.seen.push(S.step);
+    if(!S.digits[S.step]){ S.digits[S.step]=m.digit; }
+    save();
     app.innerHTML = '<div class="fade"><span class="tag">DECRYPTED</span>'+bar()+codeRow()+'<h1>答啱！解鎖 ✓</h1>'+
     '<div class="box"><div class="sub">'+(S.step===0?"第一個密碼數字（已記入）：":"獲得密碼數字：")+'<b style="color:#39ff88;font-size:22px">'+m.digit+'</b></div><div class="typed" id="t"></div><div id="ri"></div><div id="rh"></div></div><div id="nx"></div></div>';
     typeIn($("#t"), rep(m.reveal), ()=>{
@@ -387,11 +389,27 @@ function final(){
   $("#rg").oninput = ()=>{$("#pct").textContent=$("#rg").value+"%";};
   $("#lock").onclick = ()=>{ const r=result(+$("#rg").value); S.result=r; save(); showResult(r); };
 }
+function showIntel(){
+  const ov=document.createElement("div"); ov.id="ov";
+  ov.style.cssText="position:fixed;top:0;left:0;right:0;bottom:0;z-index:50;background:rgba(5,9,13,.98);overflow-y:auto;padding:18px 16px 60px";
+  let html='<div style="max-width:480px;margin:0 auto"><span class="tag">INTEL LOG</span><h1>📂 情報記錄</h1>';
+  (S.seen||[]).slice().sort((a,b)=>a-b).forEach(i=>{ const m=STEPS[i];
+    html+='<div class="box"><div class="sub">情報 '+(i+1)+'</div><div class="typed" style="min-height:0">'+rep(m.reveal)+'</div>'+
+      (m.rhint?'<div><button class="btn ghost ihb" data-i="'+i+'">💡 睇提示</button></div>':'')+
+      (m.imgs||[]).map(u=>'<img src="'+u+'" alt="" style="display:block;width:100%;max-width:300px;margin:12px auto 0;border-radius:10px">').join("")+'</div>'; });
+  html+='<button class="btn" id="ovc">關閉</button></div>';
+  ov.innerHTML=html; document.body.appendChild(ov);
+  ov.querySelectorAll(".ihb").forEach(b=>{ b.onclick=()=>{ b.parentNode.innerHTML='<div class="hint">'+rep(STEPS[+b.dataset.i].rhint)+'</div>'; }; });
+  ov.querySelector("#ovc").onclick=()=>ov.remove();
+}
 function addReset(){
-  app.insertAdjacentHTML("beforeend",'<div style="text-align:center;margin-top:28px"><button id="rs" class="btn ghost" style="display:inline-block;width:auto;min-height:36px;padding:8px 16px;font-size:12px;opacity:.6;letter-spacing:0">↺ 重新開始</button></div>');
+  const hasIntel=(S.seen||[]).length>0;
+  const bs="display:inline-block;width:auto;min-height:36px;padding:8px 16px;font-size:12px;opacity:.7;letter-spacing:0;margin:0 4px";
+  app.insertAdjacentHTML("beforeend",'<div style="text-align:center;margin-top:28px">'+(hasIntel?'<button id="ib" class="btn ghost" style="'+bs+'">📂 睇返情報</button>':'')+'<button id="rs" class="btn ghost" style="'+bs+';opacity:.5">↺ 重新開始</button></div>');
+  if(hasIntel) $("#ib").onclick=showIntel;
   $("#rs").onclick=()=>{ if(confirm("重新開始會清除所有進度（包括已獲得嘅密碼數字），確定嗎？")){
     try{ localStorage.removeItem(KEY); }catch(e){}
-    S={step:-1,phase:"q",wrong:0,digits:[],result:null,hn:0,sel:-1}; save(); location.hash=""; render(); } };
+    S={step:-1,phase:"q",wrong:0,digits:[],result:null,hn:0,sel:-1,seen:[]}; save(); location.hash=""; render(); } };
 }
 function render(){
   if(location.hash==="#final") return final();
