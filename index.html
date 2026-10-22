@@ -62,7 +62,7 @@ input[type=range]{width:100%;accent-color:#39ff88;height:32px;margin-top:16px}
 window.addEventListener("error",function(e){ var d=document.createElement("div"); d.style.cssText="position:fixed;left:0;right:0;bottom:0;background:#ff4d5e;color:#fff;font-size:12px;padding:8px;z-index:99;white-space:pre-wrap"; d.textContent="錯誤："+e.message+" (line "+(e.lineno||"?")+")"; document.body.appendChild(d); });
 if(/[?&]reset\b/.test(location.search)){ try{ localStorage.clear(); }catch(e){} }
 ["gesturestart","gesturechange","gestureend"].forEach(function(t){ document.addEventListener(t,function(e){ e.preventDefault(); }); });
-(function(){ var lt=0; document.addEventListener("touchend",function(e){ var n=Date.now(); if(n-lt<350 && e.target && e.target.tagName!=="INPUT" && e.cancelable) e.preventDefault(); lt=n; },{passive:false}); })();
+(function(){ var lt=0, lg=null; document.addEventListener("touchend",function(e){ var n=Date.now(), t=e.target; if(n-lt<350 && t===lg && t && t.closest && !t.closest("button,input,a") && e.cancelable) e.preventDefault(); lt=n; lg=t; },{passive:false}); })();
 document.addEventListener("dblclick",function(e){ if(e.target.tagName!=="INPUT") e.preventDefault(); });
 /* ============ CONFIG：只需要改呢度 ============ */
 const AGENT = "htk bb :3";
@@ -375,19 +375,32 @@ function showResult(r){
   h += r.g ? '<div class="img">'+(r.g.img?'<img src="'+r.g.img+'" alt="">':r.g.emoji)+'</div><h2 style="margin-top:14px;text-align:center">'+r.g.name+'</h2>'
            : '<div class="img">💳</div><h2 style="margin-top:14px;text-align:center">冇禮物，全部現金！</h2>';
   h += '<div class="box" style="text-align:center"><div class="sub">＋ 黑卡</div><div class="amt">'+fmt(r.card)+'</div></div>'+
-       '<div class="small" style="text-align:center">任務完成。生日快樂 🎂</div>'+(TEST?'<button class="btn red" id="rst">重置（測試）</button>':'')+'</div>';
+       '<div class="small" style="text-align:center">任務完成。生日快樂 🎂</div><div id="rr" style="margin-top:18px"><button class="btn ghost" id="rb">🔁 重新揀？</button></div>'+(TEST?'<button class="btn red" id="rst">重置（測試）</button>':'')+'</div>';
   app.innerHTML = h;
+  $("#rb").onclick=()=>{ $("#rr").innerHTML='<input type="text" id="rc" placeholder="輸入通行碼" autocomplete="off" autocapitalize="off"><div class="msg" id="rm"></div><button class="btn" id="ro">確認</button>';
+    const go=()=>{ if($("#rc").value.trim()==="-1"){ S.result=null; save(); final(); } else { $("#rm").textContent="❌ 通行碼唔啱。"; } };
+    $("#ro").onclick=go; $("#rc").onkeydown=e=>{ if(e.key==="Enter") go(); }; };
   if(TEST) $("#rst").onclick=()=>{try{localStorage.removeItem(KEY)}catch(e){};location.href=location.pathname+"?test";};
 }
-function final(){
+function final(v){
   if(S.result) return showResult(S.result);
+  const start=(v===undefined)?50:v;
   app.innerHTML = '<div class="fade"><span class="tag">LAST CHALLENGE</span><h1>🔮 心靈感應</h1><div class="box">'+
   '<p>如果你有得揀，你會將幾多 % 嘅生日慶祝預算放入<b>禮物</b>？</p>'+
   '<p>其餘會放入一張你可以自由使用嘅<b>黑卡</b>，但係放入黑卡嘅部分會打折。</p>'+
-  '<div class="pct" id="pct">50%</div><input type="range" id="rg" min="0" max="100" value="50"><div class="row"><span>0% 全部入黑卡</span><span>100% 全部做禮物</span></div>'+
+  '<div class="pct" id="pct">'+start+'%</div><input type="range" id="rg" min="0" max="100" value="'+start+'"><div class="row"><span>0% 全部入黑卡</span><span>100% 全部做禮物</span></div>'+
   '<button class="btn" id="lock">鎖定我嘅答案</button></div></div>';
   $("#rg").oninput = ()=>{$("#pct").textContent=$("#rg").value+"%";};
-  $("#lock").onclick = ()=>{ const r=result(+$("#rg").value); S.result=r; save(); showResult(r); };
+  $("#lock").onclick = ()=>confirmPick(+$("#rg").value);
+}
+function confirmPick(p){
+  app.innerHTML = '<div class="fade"><span class="tag">CONFIRM</span><h1>Are you sure?</h1><div class="box">'+
+  '<div class="sub" style="text-align:center">你揀咗將</div><div class="pct">'+p+'%</div>'+
+  '<div class="sub" style="text-align:center">放入禮物，其餘 '+(100-p)+'% 放入黑卡</div>'+
+  '<p style="text-align:center">答案一鎖定，就唔可以隨便改㗎喇。</p></div>'+
+  '<button class="btn" id="yes">Yes, I’m sure</button><button class="btn ghost" id="no">再諗下</button></div>';
+  $("#yes").onclick=()=>{ const r=result(p); S.result=r; save(); showResult(r); };
+  $("#no").onclick=()=>final(p);
 }
 function showIntel(){
   const ov=document.createElement("div"); ov.id="ov";
