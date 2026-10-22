@@ -2,12 +2,15 @@
 <html lang="zh-HK">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
 <title>CLASSIFIED · 生日任務</title>
 <style>
 :root{--bg:#0b0f14;--bg2:#121a24;--g:#39ff88;--g2:#9affc4;--red:#ff4d5e;--txt:#d9fbe8}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{-webkit-text-size-adjust:100%}
+html{-webkit-text-size-adjust:100%;touch-action:manipulation}
+body,button,.tile,.mv,#stage{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+input{-webkit-user-select:text;user-select:text}
 body{margin:0;min-height:100vh;min-height:100dvh;background:radial-gradient(circle at 20% 0,#13202c,var(--bg));color:var(--txt);font-family:"SF Mono",ui-monospace,Menlo,"PingFang HK","Noto Sans TC",monospace;display:flex;justify-content:center}
 #app{width:100%;max-width:480px;padding:18px 16px calc(60px + env(safe-area-inset-bottom))}
 .tag{display:inline-block;border:1px solid var(--red);color:var(--red);padding:2px 8px;font-size:11px;letter-spacing:2px;transform:rotate(-2deg)}
@@ -58,6 +61,9 @@ input[type=range]{width:100%;accent-color:#39ff88;height:32px;margin-top:16px}
 <script>
 window.addEventListener("error",function(e){ var d=document.createElement("div"); d.style.cssText="position:fixed;left:0;right:0;bottom:0;background:#ff4d5e;color:#fff;font-size:12px;padding:8px;z-index:99;white-space:pre-wrap"; d.textContent="錯誤："+e.message+" (line "+(e.lineno||"?")+")"; document.body.appendChild(d); });
 if(/[?&]reset\b/.test(location.search)){ try{ localStorage.clear(); }catch(e){} }
+["gesturestart","gesturechange","gestureend"].forEach(function(t){ document.addEventListener(t,function(e){ e.preventDefault(); }); });
+(function(){ var lt=0; document.addEventListener("touchend",function(e){ var n=Date.now(); if(n-lt<350 && e.target && e.target.tagName!=="INPUT" && e.cancelable) e.preventDefault(); lt=n; },{passive:false}); })();
+document.addEventListener("dblclick",function(e){ if(e.target.tagName!=="INPUT") e.preventDefault(); });
 /* ============ CONFIG：只需要改呢度 ============ */
 const AGENT = "htk bb :3";
 const HANDLER = "我";
@@ -108,7 +114,7 @@ const FOX_AR = 0.62667;
 const $ = s => document.querySelector(s);
 const app = $("#app");
 const TEST = new URLSearchParams(location.search).has("test");
-const KEY = "bday36";
+const KEY = "bday37";
 let S; try{ S = JSON.parse(localStorage.getItem(KEY)); }catch(e){}
 S = S || {step:-1,phase:"q",wrong:0,digits:[],result:null};
 const save = () => { try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} };
@@ -381,12 +387,19 @@ function final(){
   $("#rg").oninput = ()=>{$("#pct").textContent=$("#rg").value+"%";};
   $("#lock").onclick = ()=>{ const r=result(+$("#rg").value); S.result=r; save(); showResult(r); };
 }
+function addReset(){
+  app.insertAdjacentHTML("beforeend",'<div style="text-align:center;margin-top:28px"><button id="rs" class="btn ghost" style="display:inline-block;width:auto;min-height:36px;padding:8px 16px;font-size:12px;opacity:.6;letter-spacing:0">↺ 重新開始</button></div>');
+  $("#rs").onclick=()=>{ if(confirm("重新開始會清除所有進度（包括已獲得嘅密碼數字），確定嗎？")){
+    try{ localStorage.removeItem(KEY); }catch(e){}
+    S={step:-1,phase:"q",wrong:0,digits:[],result:null,hn:0,sel:-1}; save(); location.hash=""; render(); } };
+}
 function render(){
   if(location.hash==="#final") return final();
   if(S.step===-1) return intro();
-  if(S.step===-0.5) return puzzle();
-  if(S.step>=STEPS.length) return vault();
-  stepView();
+  if(S.step===-0.5) puzzle();
+  else if(S.step>=STEPS.length) vault();
+  else stepView();
+  addReset();
 }
 window.addEventListener("hashchange", render);
 render();
