@@ -55,6 +55,70 @@ input[type=range]{width:100%;accent-color:#39ff88;height:32px;margin-top:16px}
 .pop{animation:pop .6s ease}
 @keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.08)}100%{transform:scale(1)}}
 </style>
+<style>
+#bk{--bg:#0b0b0d;--panel:#16161a;--panel2:#1d1d22;--line:#2a2a31;--gold:#d9b38c;--gold2:#f0d5b4;--txt:#f3efe9;--mut:#8f8a84;--red:#ff6b6b;--grn:#7fd6a4}
+#bk,#bk *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+#bk{font-family:-apple-system,BlinkMacSystemFont,"PingFang HK","Noto Sans TC","Helvetica Neue",sans-serif;color:var(--txt);background:#000}
+#bk #bkapp{max-width:440px;min-height:100%;margin:0 auto;background:var(--bg);padding:calc(env(safe-area-inset-top) + 18px) 18px 90px;position:relative;overflow:hidden}
+#bk .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+#bk .hi small{display:block;font-size:10px;letter-spacing:.18em;color:var(--mut)}
+#bk .hi b{font-size:24px;font-weight:700}
+#bk .ic{width:36px;height:36px;border-radius:50%;background:var(--panel);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer}
+#bk .card{position:relative;height:196px;border-radius:18px;padding:18px 20px;overflow:hidden;color:var(--gold2);
+ background:linear-gradient(135deg,#050506 0%,#17171b 45%,#0a0a0c 100%);border:1px solid #2c2a28;box-shadow:0 14px 34px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.07);transition:transform .15s}
+#bk .card:before{content:"";position:absolute;inset:-40% -20%;background:repeating-linear-gradient(115deg,transparent 0 22px,rgba(217,179,140,.05) 22px 23px)}
+#bk .card:after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,235,210,.16),transparent);transform:skewX(-18deg);animation:bkshine 5s infinite}
+@keyframes bkshine{0%,60%{left:-60%}100%{left:130%}}
+#bk .card .lg{font-size:34px;font-weight:200;letter-spacing:.2em;position:relative}
+#bk .card .nm{position:absolute;left:20px;bottom:16px;font-size:15px;letter-spacing:.4em;color:var(--gold);font-weight:600}
+#bk .card .tp{position:absolute;right:20px;top:22px;font-size:11px;letter-spacing:.3em;color:var(--gold);opacity:.8}
+#bk .card .chip{position:absolute;right:20px;bottom:16px;width:34px;height:26px;border-radius:5px;background:linear-gradient(135deg,#d9b38c,#8a6a4a);opacity:.9}
+#bk .bal{margin-top:16px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px 18px}
+#bk .bal .l{display:flex;justify-content:space-between;font-size:12px;color:var(--mut)}
+#bk .bal .eye{cursor:pointer;padding:0 4px}
+#bk .bal .v{font-size:34px;font-weight:700;margin-top:6px;color:var(--gold2);font-variant-numeric:tabular-nums}
+#bk .bal .v small{font-size:14px;color:var(--mut);margin-right:6px;font-weight:500}
+#bk .bar{height:5px;background:var(--panel2);border-radius:5px;margin-top:12px;overflow:hidden}
+#bk .bar i{display:block;height:100%;background:linear-gradient(90deg,#8a6a4a,var(--gold2));border-radius:5px;transition:width .6s}
+#bk .bal .s{display:flex;justify-content:space-between;font-size:11px;color:var(--mut);margin-top:6px}
+#bk .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+#bk .grid button{background:var(--panel);border:1px solid var(--line);border-radius:14px;color:var(--txt);padding:12px 4px;font-size:11px;cursor:pointer;font-family:inherit}
+#bk .grid button span{display:block;font-size:22px;margin-bottom:4px}
+#bk .grid button:active{background:var(--panel2)}
+#bk h3{font-size:13px;letter-spacing:.12em;color:var(--mut);margin:22px 2px 8px;font-weight:600}
+#bk .tx{display:flex;align-items:center;gap:12px;padding:12px 4px;border-bottom:1px solid var(--line)}
+#bk .tx .e{width:38px;height:38px;border-radius:50%;background:var(--panel);display:flex;align-items:center;justify-content:center;font-size:18px;flex:none}
+#bk .tx .m{flex:1;min-width:0}
+#bk .tx .m b{display:block;font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#bk .tx .m small{color:var(--mut);font-size:11px}
+#bk .tx .a{font-weight:700;font-variant-numeric:tabular-nums;font-size:14px}
+#bk .neg{color:var(--txt)}
+#bk .pos{color:var(--grn)}
+#bk .empty{color:var(--mut);font-size:13px;text-align:center;padding:24px 0}
+#bk .nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:440px;background:rgba(14,14,16,.96);border-top:1px solid var(--line);display:flex;padding:8px 0 calc(env(safe-area-inset-bottom) + 8px);z-index:5}
+#bk .nav div{flex:1;text-align:center;font-size:10px;color:var(--mut);cursor:pointer}
+#bk .nav div span{display:block;font-size:20px}
+#bk .nav .bkon{color:var(--gold2)}
+#bk .fine{font-size:10px;color:#5c5853;text-align:center;margin-top:26px;line-height:1.5}
+#bk .sheet-bg{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:20;display:flex;align-items:flex-end;justify-content:center}
+#bk .sheet{width:100%;max-width:440px;background:var(--panel);border-radius:22px 22px 0 0;padding:20px 18px calc(env(safe-area-inset-bottom) + 22px);animation:bkup .25s ease;border-top:1px solid var(--line)}
+@keyframes bkup{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+#bk .sheet h2{margin:0 0 12px;font-size:18px;color:var(--txt)}
+#bk .sheet input{width:100%;background:var(--bg);border:1px solid var(--line);color:var(--txt);border-radius:12px;padding:13px;font-size:16px;margin-bottom:10px;outline:none;text-align:left;font-family:inherit}
+#bk .sheet input:focus{border-color:var(--gold)}
+#bk .chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+#bk .chips span{padding:8px 12px;border-radius:20px;background:var(--bg);border:1px solid var(--line);font-size:13px;cursor:pointer}
+#bk .chips .bkon{border-color:var(--gold);color:var(--gold2)}
+#bk .bkbtn{display:block;width:100%;min-height:0;padding:14px;border-radius:14px;border:0;font-size:15px;font-weight:700;letter-spacing:0;font-family:inherit;background:linear-gradient(135deg,#f0d5b4,#b98d63);color:#1a1209;cursor:pointer;margin-top:4px}
+#bk .bkbtn.g{background:var(--panel2);color:var(--txt);font-weight:500;border:1px solid var(--line)}
+#bk .err{color:var(--red);font-size:13px;min-height:18px;margin:2px 0 6px}
+#bk .bkok{text-align:center;padding:10px 0}
+#bk .bkok .big{font-size:46px}
+#bk .bkok b{display:block;font-size:22px;margin:6px 0}
+#bk .toast{position:fixed;top:18px;left:50%;transform:translateX(-50%);background:var(--gold2);color:#1a1209;padding:10px 18px;border-radius:20px;font-size:13px;font-weight:700;z-index:30}
+#bk{position:fixed;top:0;left:0;right:0;bottom:0;z-index:40;overflow-y:auto;-webkit-overflow-scrolling:touch;font-size:16px;line-height:1.4;-webkit-user-select:none;user-select:none}
+#bk input{-webkit-user-select:text;user-select:text}
+</style>
 </head>
 <body>
 <div id="app"></div>
@@ -381,8 +445,9 @@ function showResult(r){
   h += r.g ? '<div class="img" style="position:relative"><span>'+r.g.emoji+'</span>'+(r.g.img?'<img src="'+r.g.img+'" alt="" onerror="this.remove()" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:contain;background:#fff">':'')+'</div><h2 style="margin-top:14px;text-align:center">'+r.g.name+'</h2>'
            : '<div class="img">💳</div><h2 style="margin-top:14px;text-align:center">冇禮物，全部現金！</h2>';
   h += '<div class="box" style="text-align:center"><div class="sub">＋ 黑卡</div><div class="amt">'+fmt(r.card)+'</div></div>'+
-       '<div class="small" style="text-align:center">任務完成。生日快樂 🎂</div><div id="rr" style="margin-top:18px"><button class="btn ghost" id="rb">🔁 重新揀？</button></div>'+(TEST?'<button class="btn red" id="rst">重置（測試）</button>':'')+'</div>';
+       '<div class="small" style="text-align:center">任務完成。生日快樂 🎂</div>'+(r.card>0?'<button class="btn" id="bc" style="margin-top:16px">🖤 開啟黑卡</button>':'')+'<div id="rr" style="margin-top:18px"><button class="btn ghost" id="rb">🔁 重新揀？</button></div>'+(TEST?'<button class="btn red" id="rst">重置（測試）</button>':'')+'</div>';
   app.innerHTML = h;
+  if($("#bc")) $("#bc").onclick=()=>openCard(r);
   $("#rb").onclick=()=>{ $("#rr").innerHTML='<input type="text" id="rc" placeholder="輸入通行碼" autocomplete="off" autocapitalize="off"><div class="msg" id="rm"></div><button class="btn" id="ro">確認</button>';
     const go=()=>{ if($("#rc").value.trim()==="-1"){ S.result=null; save(); final(); } else { $("#rm").textContent="❌ 通行碼唔啱。"; } };
     $("#ro").onclick=go; $("#rc").onkeydown=e=>{ if(e.key==="Enter") go(); }; };
@@ -428,7 +493,7 @@ function addReset(){
   app.insertAdjacentHTML("beforeend",'<div style="text-align:center;margin-top:28px">'+(hasIntel?'<button id="ib" class="btn ghost" style="'+bs+'">📂 睇返情報</button>':'')+'<button id="rs" class="btn ghost" style="'+bs+';opacity:.5">↺ 重新開始</button></div>');
   if(hasIntel) $("#ib").onclick=showIntel;
   $("#rs").onclick=()=>{ if(confirm("重新開始會清除所有進度（包括已獲得嘅密碼數字），確定嗎？")){
-    try{ localStorage.removeItem(KEY); }catch(e){}
+    try{ localStorage.removeItem(KEY); localStorage.removeItem("bcard1"); }catch(e){}
     S={step:-1,phase:"q",wrong:0,digits:[],result:null,hn:0,sel:-1,seen:[]}; save(); location.hash=""; render(); } };
 }
 function render(){
@@ -439,8 +504,138 @@ function render(){
   else stepView();
   addReset();
 }
+
+const openCard = (function(){
+const NAME = "bb", CARD_NAME = "HTK", ADMIN_PIN = "0000", KEY = "bcard1";
+const CATS = [["🍽️","食飯"],["🛍️","購物"],["💆","按摩 / Spa"],["🎬","玩樂"],["🚕","交通"],["✨","其他"]];
+let root = null, app = null;
+const $ = s => root.querySelector(s);
+const fmt = n => "HK$" + Math.round(n).toLocaleString("en-US");
+const num = n => Math.round(n).toLocaleString("en-US");
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let B = null, tab = "home", hide = false, first = true;
+function load(){ try{ B = JSON.parse(localStorage.getItem(KEY)); }catch(e){ B = null; } }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(B)); }catch(e){} }
+function dstr(t){ const d = new Date(t); const p = x => String(x).padStart(2,"0"); return d.getFullYear()+"/"+p(d.getMonth()+1)+"/"+p(d.getDate())+" "+p(d.getHours())+":"+p(d.getMinutes()); }
+function init(r){
+  load();
+  const src = Math.round(r.card)+"|"+(r.g&&r.g.name||"");
+  if(B && B.start!=null && B.src===src) return;
+  const now = Date.now(), c = Math.round(r.card);
+  B = {src:src, start:c, bal:c, tx:[{t:now, e:"🎂", n:"生日入帳", c:"黑卡", a:c}]};
+  if(r.g && r.g.name) B.tx.push({t:now-1, e:"🎁", n:r.g.name, c:"生日禮物", a:0, info:true});
+  save();
+}
+function sheet(fill){
+  closeSheet();
+  const bg = document.createElement("div"); bg.className = "sheet-bg"; bg.id = "sbg";
+  const s = document.createElement("div"); s.className = "sheet"; bg.appendChild(s);
+  bg.addEventListener("click", e => { if(e.target === bg) closeSheet(); });
+  root.appendChild(bg); fill(s);
+}
+function closeSheet(){ const b = root && $("#sbg"); if(b) b.remove(); }
+function toast(t){ const d = document.createElement("div"); d.className = "toast"; d.textContent = t; root.appendChild(d); setTimeout(() => d.remove(), 1800); }
+function countUp(el, to){
+  const t0 = performance.now(), dur = 900;
+  (function f(t){ const k = Math.min(1,(t-t0)/dur), e = 1-Math.pow(1-k,3); el.textContent = num(to*e); if(k<1) requestAnimationFrame(f); })(t0);
+}
+function txHtml(list){
+  if(!list.length) return '<div class="empty">暫時冇紀錄</div>';
+  return list.map(x => '<div class="tx"><div class="e">'+x.e+'</div><div class="m"><b>'+esc(x.n)+'</b><small>'+esc(x.c)+' · '+dstr(x.t)+'</small></div>'+
+    '<div class="a '+(x.info?'neg':(x.a>0?'pos':'neg'))+'">'+(x.info?'已領取':(x.a>0?'+':'−')+num(Math.abs(x.a)))+'</div></div>').join("");
+}
+function nav(){
+  return '<div class="nav"><div class="'+(tab==="home"?"bkon":"")+'" data-t="home"><span>🏠</span>首頁</div><div class="'+(tab==="tx"?"bkon":"")+'" data-t="tx"><span>🧾</span>紀錄</div></div>';
+}
+function bind(){
+  root.querySelectorAll(".nav div").forEach(n => n.onclick = () => { tab = n.dataset.t; render(); });
+  const x = $("#bkx"); if(x) x.onclick = close;
+}
+function home(){
+  const used = B.start - B.bal, pct = B.start ? Math.max(0, Math.min(100, B.bal/B.start*100)) : 0;
+  const hr = new Date().getHours();
+  app.innerHTML =
+  '<div class="top"><div class="hi"><small>GOOD '+(hr<12?"MORNING":hr<18?"AFTERNOON":"EVENING")+'</small><b>Hi, '+esc(NAME)+'</b></div><div class="ic" id="bkx">✕</div></div>'+
+  '<div class="card" id="cd"><div class="tp">CARD</div><div class="lg">BLACK</div><div class="nm">'+esc(CARD_NAME)+'</div><div class="chip"></div></div>'+
+  '<div class="bal"><div class="l"><span>可用餘額</span><span class="eye" id="eye">'+(hide?"🙈":"👁️")+'</span></div>'+
+  '<div class="v"><small>HK$</small><span id="bv">'+(hide?"••••••":num(B.bal))+'</span></div>'+
+  '<div class="bar"><i style="width:'+pct+'%"></i></div><div class="s"><span>已使用 '+fmt(used)+'</span><span>總額 '+fmt(B.start)+'</span></div></div>'+
+  '<div class="grid"><button id="b1"><span>💸</span>消費記帳</button><button id="b2"><span>🧾</span>紀錄</button><button id="b3"><span>🎁</span>禮物</button><button id="b4"><span>⚙️</span>管理</button></div>'+
+  '<h3>最近交易</h3>'+txHtml(B.tx.slice().sort((a,b)=>b.t-a.t).slice(0,4))+
+  '<div class="fine">此頁面只係生日遊戲嘅一部分，餘額為遊戲內金額，<br>實際兌換請以手上確認為準。</div>'+nav();
+  if(first && !hide){ countUp($("#bv"), B.bal); } first = false;
+  $("#eye").onclick = () => { hide = !hide; home(); bind(); };
+  $("#b1").onclick = spendSheet; $("#b2").onclick = () => { tab = "tx"; render(); };
+  $("#b3").onclick = giftSheet; $("#b4").onclick = adminSheet;
+  const cd = $("#cd");
+  const mv = e => { const r = cd.getBoundingClientRect(), t = (e.touches?e.touches[0]:e), x = (t.clientX-r.left)/r.width-.5, y = (t.clientY-r.top)/r.height-.5; cd.style.transform = "perspective(700px) rotateY("+(x*14)+"deg) rotateX("+(-y*14)+"deg)"; };
+  ["touchmove","mousemove"].forEach(ev => cd.addEventListener(ev, mv, {passive:true}));
+  ["touchend","mouseleave"].forEach(ev => cd.addEventListener(ev, () => cd.style.transform = ""));
+}
+function txPage(){
+  const all = B.tx.slice().sort((a,b)=>b.t-a.t);
+  const spent = all.filter(x=>!x.info && x.a<0).reduce((s,x)=>s-x.a,0);
+  app.innerHTML = '<div class="top"><div class="hi"><small>HISTORY</small><b>交易紀錄</b></div><div class="ic" id="bkx">✕</div></div>'+
+  '<div class="bal"><div class="l"><span>累計消費</span></div><div class="v"><small>HK$</small>'+num(spent)+'</div></div><h3>全部交易</h3>'+txHtml(all)+nav();
+}
+function spendSheet(){
+  let cat = 0;
+  sheet(h => {
+    h.innerHTML = '<h2>消費記帳</h2><input id="am" type="text" inputmode="numeric" placeholder="金額（HK$）"><input id="nt" type="text" placeholder="備註（例如：Omakase）" maxlength="30">'+
+    '<div class="chips">'+CATS.map((c,i)=>'<span data-i="'+i+'" class="'+(i===0?"bkon":"")+'">'+c[0]+' '+c[1]+'</span>').join("")+'</div><div class="err" id="e"></div><button class="bkbtn" id="go">確認使用</button>';
+    h.querySelectorAll(".chips span").forEach(s => s.onclick = () => { cat = +s.dataset.i; h.querySelectorAll(".chips span").forEach(x=>x.classList.remove("bkon")); s.classList.add("bkon"); });
+    $("#go").onclick = () => {
+      const a = parseInt($("#am").value.replace(/[^0-9]/g,""),10);
+      if(!a){ $("#e").textContent = "請輸入金額。"; return; }
+      if(a > B.bal){ $("#e").textContent = "餘額不足，最多可用 "+fmt(B.bal)+"。"; return; }
+      const nt = $("#nt").value.trim() || CATS[cat][1];
+      B.bal -= a; B.tx.push({t:Date.now(), e:CATS[cat][0], n:nt, c:CATS[cat][1], a:-a}); save();
+      h.innerHTML = '<div class="bkok"><div class="big">✅</div><b>已記帳 '+fmt(a)+'</b><div style="color:var(--mut)">'+esc(nt)+'</div><div style="color:var(--mut);margin-top:10px">剩餘 '+fmt(B.bal)+'</div></div><button class="bkbtn" id="d">完成</button>';
+      $("#d").onclick = () => { closeSheet(); render(); };
+    };
+  });
+}
+function giftSheet(){
+  const g = B.tx.find(x=>x.info);
+  sheet(h => {
+    h.innerHTML = '<h2>🎁 我嘅禮物</h2>'+(g?'<div class="bkok"><div class="big">🎀</div><b>'+esc(g.n)+'</b><div style="color:var(--mut)">已記錄喺生日任務</div></div>':'<div class="empty">未有禮物紀錄</div>')+'<button class="bkbtn g" id="c">關閉</button>';
+    $("#c").onclick = closeSheet;
+  });
+}
+function adminSheet(){
+  sheet(h => {
+    h.innerHTML = '<h2>管理</h2><input id="p" type="password" inputmode="numeric" placeholder="管理員密碼"><div class="err" id="e"></div><button class="bkbtn" id="go">解鎖</button>';
+    $("#go").onclick = () => {
+      if($("#p").value !== ADMIN_PIN){ $("#e").textContent = "密碼唔啱。"; return; }
+      h.innerHTML = '<h2>管理員</h2><input id="am" type="text" inputmode="numeric" placeholder="金額（HK$）"><input id="nt" type="text" placeholder="備註（可留空）" maxlength="30"><div class="err" id="e"></div>'+
+      '<button class="bkbtn" id="add">＋ 增值</button><button class="bkbtn g" id="sub" style="margin-top:8px">− 扣除</button><button class="bkbtn g" id="rs" style="margin-top:8px;color:var(--red)">重設黑卡</button>';
+      const adj = sign => {
+        const a = parseInt($("#am").value.replace(/[^0-9]/g,""),10);
+        if(!a){ $("#e").textContent = "請輸入金額。"; return; }
+        if(sign<0 && a>B.bal){ $("#e").textContent = "超過餘額。"; return; }
+        B.bal += sign*a; if(sign>0) B.start += a;
+        B.tx.push({t:Date.now(), e:sign>0?"➕":"➖", n:$("#nt").value.trim()||(sign>0?"增值":"調整"), c:"管理員", a:sign*a}); save(); closeSheet(); render(); toast(sign>0?"已增值":"已扣除");
+      };
+      $("#add").onclick = () => adj(1); $("#sub").onclick = () => adj(-1);
+      $("#rs").onclick = () => { if(confirm("重設會清除黑卡所有紀錄，確定？")){ try{ localStorage.removeItem(KEY); }catch(e){} close(); } };
+    };
+  });
+}
+function render(){ if(tab === "tx") txPage(); else home(); bind(); }
+function close(){ if(root){ root.remove(); root = null; } }
+function open(r){
+  close();
+  root = document.createElement("div"); root.id = "bk";
+  root.innerHTML = '<div id="bkapp"></div>'; document.body.appendChild(root);
+  app = root.querySelector("#bkapp"); tab = "home"; hide = false; first = true;
+  if(!r || r.card==null || r.card<=0){ app.innerHTML = '<div style="padding-top:80px;text-align:center"><div style="font-size:46px">🖤</div><p style="color:var(--mut)">冇黑卡金額。</p><button class="bkbtn g" id="bkx">返回</button></div>'; $("#bkx").onclick = close; return; }
+  init(r); render();
+}
+return open;
+})();
 window.addEventListener("hashchange", render);
 render();
+if(location.hash==="#card" && S.result) openCard(S.result);
 </script>
 </body>
 </html>
